@@ -16,20 +16,21 @@ const findKeybase = (folder) => {
     .filter((e) => e);
 };
 
-const getIgnoredFiles = (file) => {
-  const constent = fs
+const getDotKeybaseFile = (file) => {
+  const content = fs
     .readFileSync(file, "utf-8")
     .split("\n")
     .filter((e) => e)
-    .filter((e) => e.charAt(0) !== "#")
-    .forEach((e) => {
-      let destination = `${keybaseRoot}${file.split(projectsRoot)[1]}`.replace(
-        "/.keybase",
-        `/${e}`
-      );
-      let source = file.replace("/.keybase", `/${e}`);
-      fs.copySync(source, destination);
-    });
+    .filter((e) => e.charAt(0) !== "#");
+  content.push(".keybase");
+  content.forEach((e) => {
+    let destination = `${keybaseRoot}${file.split(projectsRoot)[1]}`.replace(
+      "/.keybase",
+      `/${e}`
+    );
+    let source = file.replace("/.keybase", `/${e}`);
+    fs.copySync(source, destination);
+  });
 };
 
-findKeybase(projectsRoot).forEach((file) => getIgnoredFiles(file));
+findKeybase(projectsRoot).forEach((file) => getDotKeybaseFile(file));
