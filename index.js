@@ -29,7 +29,15 @@ const getDotKeybaseFile = (file) => {
       `/${e}`
     );
     let source = file.replace("/.keybase", `/${e}`);
-    fs.copySync(source, destination);
+    try {
+      fs.copySync(source, destination);
+      console.log(`✅ Copied ${source} to ${destination}`);
+    } catch (error) {
+      console.log(
+        `❌ Could not copy ${source} to ${destination}`,
+        `\x1b[31m${error.message}\x1b[0m`
+      );
+    }
   });
 };
 
